@@ -1,9 +1,14 @@
-/** @type {import('tailwindcss').Config} */
+// tailwind.config.js
 export default {
-  content: ['./public/**/*.html',
-  './src/**/*.tsx',],
+  content: ['./public/**/*.html', './src/**/*.tsx'],
   theme: {
-    extend: {},
+    extend: {
+      backgroundColor: {
+        'navy-blue': '#001F3F',      // Customize hex code as needed
+        'electric-blue': '#3498db',  // Customize hex code as needed
+      },
+    },
   },
+  variants: {},
   plugins: [],
 }

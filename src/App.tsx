@@ -1,19 +1,30 @@
 import React, { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
+import { Input } from './Components/input';
+import { Button } from './Components/Button';
 
+type Item = {
+  title : string, 
+  id: string,
+}[];
 
 const  App : React.FC=()=> {
-
-const[items,setItems] = useState<string[]>([])
+  
+const[items,setItems] = useState<Item>([])
 const[inputvalue, setInputValue] = useState<string>("")
 
-const handlesubmit =(e : React.FormEvent)=> {
+
+const handlesubmit =(e : React.FormEvent) => {
   e.preventDefault();
-  setItems((prev)=> [...prev,inputvalue]);
+  setItems((prev )=> [...prev,{title : inputvalue , id:Date.now().toString()}]);
   setInputValue("");
-  console.log("data");
 }
+
+const handleDelete = (id : string) =>{
+  setItems((prev )=> prev.filter((data) => data.id !== id))
+}
+
 
 
   return (
@@ -23,19 +34,19 @@ const handlesubmit =(e : React.FormEvent)=> {
        </div>
       <div className='flex items-center flex-col'>
          <form onSubmit={handlesubmit}>
-           <input type="text" className='w-full bg-gray-400 h-10 border rounded-md p-2 ' onChange={(e)=> setInputValue(e.target.value)} />
+           <Input  inputValue={inputvalue} setInputValue={setInputValue} />
+            <Button  className={'px-4 mt-2 py-2 bg-electric-blue w-full  rounded-md '} >ADD</Button>
          
-         <button type='submit' className='px-4 mt-2 py-2 bg-electric-blue w-full  rounded-md'>ADD</button>
          </form>
       </div>
 
       <div className='mt-3  max-w-[240px] w-full  h-[200px]  overflow-y-auto'>
-      {items.map((data, key) => (
-         <div key={key} className='py-2 mt-1 text-blue-200 border rounded flex'>
-           <p className='ml-2'>{data}</p>
-            <button className='ms-auto mr-2'>
+      {items.map((data, key)  => (
+         <div key={data.id} className='py-2 mt-1 text-blue-200 border rounded flex'>
+           <p className='ml-2'>{data.title}</p>
+            <Button onClick={()=> handleDelete(data.id)}  className={`ms-auto mr-2`}>
                <FontAwesomeIcon icon={faTrashCan} />
-             </button>
+             </Button>
          </div>
         ))}
       </div>
